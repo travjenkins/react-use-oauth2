@@ -48,16 +48,20 @@ const enhanceAuthorizeUrl = (
 	responseType: Oauth2Props['responseType'],
 	extraQueryParametersRef: React.MutableRefObject<Oauth2Props['extraQueryParameters']>
 ) => {
-	const query = objectToQuery({
-		response_type: responseType,
-		client_id: clientId,
-		redirect_uri: redirectUri,
-		scope,
-		state,
-		...extraQueryParametersRef.current,
-	});
+	if (responseType.length > 0 && scope.length > 0 && state.length > 0 && clientId.length > 0) {
+		const query = objectToQuery({
+			response_type: responseType,
+			client_id: clientId,
+			redirect_uri: redirectUri,
+			scope,
+			state,
+			...extraQueryParametersRef.current,
+		});
 
-	return `${authorizeUrl}?${query}`;
+		return `${authorizeUrl}?${query}`;
+	}
+
+	return authorizeUrl;
 };
 
 // https://medium.com/@dazcyril/generating-cryptographic-random-state-in-javascript-in-the-browser-c538b3daae50
